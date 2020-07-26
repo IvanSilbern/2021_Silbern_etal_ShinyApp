@@ -8,8 +8,8 @@ uncompress "Lineplots_BTX.zip" and "Lineplots_CaEGTA.zip" folders
 
 ### Content
 "\Lineplots_BTX" and "\Lineplots_CaEGTA" contains plots (svg) of log2 fold changes of phosphorylation sites per protein in Mock/BTX and Ca/EGTA experiments, respectively. File names are Uniprot protein accessions.  
-*.Rdata data required by the App
-app.R app R file
+\*.Rdata data required by the App  
+"app.R" app R file
 
 ### Execution
 Start command line, set working directory to the location of app.R  
