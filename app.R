@@ -1,6 +1,6 @@
 # app.R
 
-# CaEGTA vs BTX
+# CaEGTA vs BoNT
 
 
 library(shiny)
@@ -45,7 +45,7 @@ dotplot <- function(df){
   
   if(nrow(df) == 0) return(ggplot())
   
-  expid <- c("CaEGTA_01", "CaEGTA_02", "BTX_01", "BTX_02")
+  expid <- c("CaEGTA_01", "CaEGTA_02", "BoNT_01", "BoNT_02")
   missing <- expid[!expid %in% df$ExperimentID]
   
   if(length(missing) != 0){
@@ -67,7 +67,7 @@ dotplot <- function(df){
       } else {
         
         temp[(i-1)*6 + (1:3), Condition := "Mock"]
-        temp[(i-1)*6 + (4:6), Condition := "BTX"]
+        temp[(i-1)*6 + (4:6), Condition := "BoNT"]
         
       }
       
@@ -80,7 +80,7 @@ dotplot <- function(df){
     
   }
   df <- df[, ExperimentID := factor(ExperimentID, levels = expid)]
-  df <- df[, Condition := factor(Condition, levels = c("Ca", "EGTA", "Mock", "BTX"))]
+  df <- df[, Condition := factor(Condition, levels = c("Ca", "EGTA", "Mock", "BoNT"))]
   
   means <- df[, list(Mean = mean(Norm.intensity)), by = c("ExperimentID", "Condition")]
   
@@ -95,13 +95,13 @@ dotplot <- function(df){
                       aes(y = Mean, group = ExperimentID), position = position_dodge2(width = 0.75),
                       shape = 25, fill = "white")
   g <- g + scale_x_discrete(labels = c("Experiment1\nCa / EGTA", "Experiment2\nCa / EGTA",
-                                       "Experiment3\nMock / BTX", "Experiment4\nMock / BTX"))
+                                       "Experiment3\nMock / BoNT", "Experiment4\nMock / BoNT"))
   g <- g + ggtitle(paste0(df$Gene.name[1], ": ", df$Amino.acid[1], df$Position[1]))
   g <- g + annotate("text", y = max(df$Norm.intensity, na.rm = TRUE) * 0.95, x = 1.0, hjust = 0,
                     label = paste0("log2FC (Ca / EGTA) = ", round(df$log2FC[df$ExperimentID == "CaEGTA_01"][1], 2), ";    ",
                                    "q-Value = ", round(df$q.val[df$ExperimentID == "CaEGTA_01"][1], 3), "\n",
-                                   "log2FC (Mock / BTX) = ", round(df$log2FC[df$ExperimentID == "BTX_01"][1], 2), ";    ",
-                                   "q-Value = ", round(df$q.val[df$ExperimentID == "BTX_01"][1], 3)
+                                   "log2FC (Mock / BoNT) = ", round(df$log2FC[df$ExperimentID == "BoNT_01"][1], 2), ";    ",
+                                   "q-Value = ", round(df$q.val[df$ExperimentID == "BoNT_01"][1], 3)
                     ))
   g <- g + ylab("Normalized Intensity") + xlab("")
   suppressWarnings(print(g))
@@ -198,15 +198,15 @@ ui = fluidPage(
       # Line plot Phosphosites
       fluidRow(
         
-        HTML("<h4> Ca<sup>2+</sup> vs EGTA </h4>"),
+        HTML('<h4 style="margin-bottom: -2em; position: relative; z-index: 500;"> Ca<sup>2+</sup> vs EGTA </h4>'),
         column(12, htmlOutput("lineplot_sites_CaEGTA", inline = TRUE))
         
       ),
       
       fluidRow(
         
-        HTML("<h4> Mock- vs BTX-Treated </h4>"),
-        column(12, htmlOutput("lineplot_sites_BTX"))
+        HTML('<h4 style="margin-bottom: -2em; position: relative; z-index: 500;"> Mock- vs BoNT-Treated </h4>'),
+        column(7, htmlOutput("lineplot_sites_BoNT"))
         
       )
       
@@ -328,8 +328,8 @@ server = function(input, output, session) {
     
     html <- xml2::read_html(file_path)
     
-    new_w = paste0(round(rv$window_w * (0.79375 / 3) * 8/12 * 0.98 * scaling_factor, 2), "mm")
-    new_h = paste0(round(rv$window_h * (0.79375 / 3) * 0.48 * 0.98 * scaling_factor, 2), "mm")
+    new_w = paste0(round(rv$window_w * (0.79375 / 3) * 8/12 * 1.02 * scaling_factor, 2), "mm")
+    new_h = paste0(round(rv$window_h * (0.79375 / 3) * 0.48 * 1.02 * scaling_factor, 2), "mm")
     
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "preserveAspectRatio", value = "xMinYMin meet")
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "width", value = new_w)
@@ -338,10 +338,10 @@ server = function(input, output, session) {
     
   })
   
-  output$lineplot_sites_BTX <- renderUI(expr = {
+  output$lineplot_sites_BoNT <- renderUI(expr = {
     
     acc <- rv$acc_sel
-    file_path <- file.path(paste0("Lineplots_BTX/", acc, ".svg"))
+    file_path <- file.path(paste0("Lineplots_BoNT/", acc, ".svg"))
     if(!file.exists(file_path)){ 
       
       file_path <- empty_file_path
@@ -356,12 +356,13 @@ server = function(input, output, session) {
     html <- xml2::read_html(file_path)
     
     
-    new_w = paste0(round(rv$window_w * (0.79375 / 3) * 8/12 * 0.98 * scaling_factor, 2), "mm")
-    new_h = paste0(round(rv$window_h * (0.79375 / 3) * 0.48 * 0.98 * scaling_factor, 2), "mm")
+    new_w = paste0(round(rv$window_w * (0.79375 / 3) * 8/12 * 1.02 * scaling_factor, 2), "mm")
+    new_h = paste0(round(rv$window_h * (0.79375 / 3) * 0.48 * 1.02 * scaling_factor, 2), "mm")
     
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "preserveAspectRatio", value = "xMinYMin meet")
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "width", value = new_w)
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "height", value = new_h)
+
     HTML(as.character(html))
     
   })
