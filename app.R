@@ -334,6 +334,9 @@ server = function(input, output, session) {
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "preserveAspectRatio", value = "xMinYMin meet")
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "width", value = new_w)
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "height", value = new_h)
+    xml2::xml_set_attr(xml2::xml_find_all(html, ".//text"), attr = "text-rendering", value = "optimizeLegibility")
+    xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "shape-rendering", value = "geometricPrecision")
+    
     HTML(as.character(html))
     
   })
@@ -362,7 +365,9 @@ server = function(input, output, session) {
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "preserveAspectRatio", value = "xMinYMin meet")
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "width", value = new_w)
     xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "height", value = new_h)
-
+    xml2::xml_set_attr(xml2::xml_find_all(html, ".//text"), attr = "text-rendering", value = "optimizeLegibility")
+    xml2::xml_set_attr(xml2::xml_find_all(html, ".//svg"), attr = "shape-rendering", value = "geometricPrecision")
+    
     HTML(as.character(html))
     
   })
