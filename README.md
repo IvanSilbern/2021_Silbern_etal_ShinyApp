@@ -1,7 +1,8 @@
 # README
 
-ShinyApp is provided in support of the publication:
-2020 Silbern et al
+ShinyApp is provided in support of the publication:  
+Silbern, I., Pan, K.T., Fiosins, M., Bonn, S., Rizzoli, S.O., Fornasiero, E.F., Urlaub, H. and Jahn, R., 2021. Protein phosphorylation in depolarized synaptosomes: Dissecting primary effects of calcium from synaptic vesicle cycling. Molecular & Cellular Proteomics, p.100061.  
+DOI:https://doi.org/10.1016/j.mcpro.2021.100061
 
 ### Before start
 uncompress "Lineplots_BTX.zip" and "Lineplots_CaEGTA.zip" folders
